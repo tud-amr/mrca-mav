@@ -1,0 +1,9 @@
+Building MEX interface:
+[Warning: You are using gcc version '8.4.0'. The version of gcc is not
+supported. The version currently supported with MEX is '6.3.x'. For a
+list of currently supported compilers see:
+<a href="https://www.mathworks.com/support/compilers/current_release">https://www.mathworks.com/support/compilers/current_release</a>.] 
+[> In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('generateCode')" style="font-weight:bold">generateCode</a>
+  In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('FORCES_NLP')" style="font-weight:bold">FORCES_NLP</a>
+  In <a href="matlab:matlab.internal.language.introspective.errorDocCallback('mpc_generator_basic', '/home/hai/Documents/Code/00_Hai/open-source/mrca-mav/mpc/basic/mpc_generator_basic.m', 148)" style="font-weight:bold">mpc_generator_basic</a> (<a href="matlab: opentoline('/home/hai/Documents/Code/00_Hai/open-source/mrca-mav/mpc/basic/mpc_generator_basic.m',148,0)">line 148</a>)] 
+
