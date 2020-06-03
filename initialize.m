@@ -7,6 +7,7 @@ setROS;                 % rosinit
 
 %% Application and if get new Forces solver
 application  = 'basic';
+% application  = 'chance';
 fprintf('[%s] Application: %s \n',datestr(now,'HH:MM:SS'), application);
 getNewSolver = 0;
 quad_ID = [4, 3, 2, 1, 5:100];  % ID of the real drones used for experiments
@@ -17,6 +18,8 @@ nDynObs = 2;            % number of moving obstacles
 % three global variables are defined: pr, model, index
 if strcmp(application, 'basic')
     basic_setup;        % basic multi-mav collision avoidance, slack is used
+elseif strcmp(application, 'chance')
+    chance_setup;       % chance constrained collision avoidance
 else
     error('No application is spercified!');
 end
@@ -74,20 +77,27 @@ cfg.ifShowQuadGoal      = 0;
 cfg.ifShowQuadPath      = 1;
 cfg.ifShowQuadCov       = 0;
 cfg.ifShowQuadPathCov   = 0;
-cfg.quadPathCovShowNum  = 5;
 
-% noise simulation
+%% Extra running configuration for chance constrained collision avoidance
+% collision chance threshold
+cfg.quad.coll(3)        = 0.03;
+cfg.obs.coll(3)         = 0.03;
+cfg.quad.deltaAux       = erfinv(1-2.0*cfg.quad.coll(3));
+cfg.obs.deltaAux        = erfinv(1-2.0*cfg.obs.coll(3));
 cfg.quad.Mahalanobis    = sqrt(chi2inv(1-cfg.quad.coll(3),3));
 cfg.obs.Mahalanobis     = sqrt(chi2inv(1-cfg.obs.coll(3),3));
+% default added noise to the quad
 % quad
 cfg.addQuadStateNoise   = 0;
-if strcmp(cfg.application, 'chance') || strcmp(cfg.application, 'chance_slack')
+if strcmp(cfg.application, 'chance')
     cfg.addQuadStateNoise = 1;
 end
-cfg.quad.noise.pos      = diag([0.06, 0.06, 0.06].^2);
+cfg.quad.noise.pos      = diag([0.04, 0.04, 0.04].^2);
 cfg.quad.noise.vel      = diag([0.01, 0.01, 0.01].^2);
-cfg.quad.noise.euler    = diag(deg2rad([0.5, 0.5, 0.0]).^2);
+cfg.quad.noise.euler    = diag(deg2rad([0.1, 0.1, 0.0]).^2);
 % obs
-cfg.addObsStateNoise    = 1;
-cfg.obs.noise.pos       = 0*diag([0.04, 0.04, 0.04].^2);
-cfg.obs.noise.vel       = 0*diag([0.01, 0.01, 0.01].^2);
+cfg.addObsStateNoise    = 0;
+cfg.obs.noise.pos       = diag([0.04, 0.04, 0.04].^2);
+cfg.obs.noise.vel       = diag([0.01, 0.01, 0.01].^2);
+% for extra visualization
+cfg.quadPathCovShowNum  = 5;
