@@ -26,7 +26,7 @@ function dx = bebop_dynamics(x, u)
     %   k_theta     =   1.1075
     %   tau_theta   =   0.2318
     %
-    % (c) Hai Zhu, TU Delft, 2018, h.zhu@tudelft.nl
+    % (c) Hai Zhu, TU Delft, 2019, h.zhu@tudelft.nl
     %
 
     %% Model parameters
@@ -53,10 +53,15 @@ function dx = bebop_dynamics(x, u)
 
     phi         =   x(7);
     theta       =   x(8);
-    psi         =   x(9);
+%   psi         =   x(9);   % in this way, should be more accurate? 
 
-    ax = (cos(psi)*tan(theta)/cos(phi) + sin(psi)*tan(phi))*g - kD_x*vx;
-    ay = (sin(psi)*tan(theta)/cos(phi) - cos(psi)*tan(phi))*g - kD_y*vy;
+%     ax = (cos(psi)*tan(theta)/cos(phi) + sin(psi)*tan(phi))*g - kD_x*vx;
+%     ay = (sin(psi)*tan(theta)/cos(phi) - cos(psi)*tan(phi))*g - kD_y*vy;
+    
+    % in this way, might be computationally easier
+    ax =  tan(theta)*g - kD_x*vx;
+    ay = -tan(phi)*g - kD_y*vy;
+    
     az = (k_vz*vz_c - vz) / tau_vz;
 
     %% attitude dynamics

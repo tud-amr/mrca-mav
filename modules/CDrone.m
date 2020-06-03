@@ -591,8 +591,11 @@ classdef CDrone < handle
                 obj.u_mpc_ = -0.0 * obj.u_mpc_;
            end
            
-           % if transform u, check the using dynamics model before doing this!
+           % transform u, check the usind dynamics model before doing this!
+           yaw = obj.euler_est_(3);
            obj.u_body_    = obj.u_mpc_;
+           obj.u_body_(1) = obj.u_mpc_(2)*sin(yaw) + obj.u_mpc_(1)*cos(yaw);
+           obj.u_body_(2) = obj.u_mpc_(2)*cos(yaw) + obj.u_mpc_(1)*sin(yaw);
            
         end
         
